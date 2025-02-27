@@ -44,7 +44,36 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Third-party apps
+    "rest_framework",
+    "rest_framework.authtoken",
+    "channels",
+    # Local apps
+    "authentication",
+    "chat",
+    "reactions",
+    "websockets",
 ]
+
+# REST Framework settings
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+}
+
+# Channels settings
+ASGI_APPLICATION = "core.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -135,3 +164,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 DATABASE_ROUTERS = ["core.database_routers.DatabaseRouter"]
+
+
+AUTH_USER_MODEL = "authentication.User"
