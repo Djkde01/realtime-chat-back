@@ -47,7 +47,10 @@ INSTALLED_APPS = [
     # Third-party apps
     "rest_framework",
     "rest_framework.authtoken",
+    "rest_framework_simplejwt.token_blacklist",
     "channels",
+    "rest_framework_simplejwt",
+    "storages",  # For CDN integration
     # Local apps
     "authentication",
     "chat",
@@ -58,7 +61,7 @@ INSTALLED_APPS = [
 # REST Framework settings
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
@@ -167,3 +170,36 @@ DATABASE_ROUTERS = ["core.database_routers.DatabaseRouter"]
 
 
 AUTH_USER_MODEL = "authentication.User"
+
+# JWT Settings
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": True,
+}
+
+
+# Cloudflare R2 Settings
+R2_ACCESS_KEY_ID = os.getenv("R2_ACCESS_KEY_ID")
+R2_SECRET_ACCESS_KEY = os.getenv("R2_SECRET_ACCESS_KEY")
+R2_STORAGE_BUCKET_NAME = os.getenv("R2_STORAGE_BUCKET_NAME")
+R2_ACCOUNT_ID = os.getenv("R2_ACCOUNT_ID")
+R2_CUSTOM_DOMAIN = os.getenv("R2_CUSTOM_DOMAIN", f"{R2_ACCOUNT_ID}.r2.dev")
+
+# Media storage configuration
+DEFAULT_FILE_STORAGE = "core.storage_backends.MediaStorage"
+
+
+# Public URL access via Workers
+if os.getenv("R2_WORKER_ENABLED", "False").lower() == "true":
+    R2_CUSTOM_DOMAIN = os.getenv("R2_WORKER_DOMAIN")
+
+
+# Add Worker configuration
+USE_WORKER_URL = os.getenv("USE_WORKER_URL", "True").lower() == "true"
+WORKER_URL = os.getenv("WORKER_URL")
+WORKER_AUTH_KEY = os.getenv("WORKER_AUTH_KEY")
