@@ -5,7 +5,8 @@ from django.utils import timezone
 
 class User(AbstractUser):
     email = models.EmailField(unique=True, null=False)
-    profile_img = models.ImageField(upload_to="avatars/", blank=True, null=True)
+    # Change to CharField to store URL from CDN
+    profile_img = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
