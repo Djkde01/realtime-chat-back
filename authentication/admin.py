@@ -9,15 +9,20 @@ class UserAdmin(BaseUserAdmin):
     list_display = (
         "username",
         "email",
+        "first_name",
+        "last_name",
         "is_staff",
         "created_at",
     )
+
+    # Fix the fieldsets format - each 'fields' value must be a list or tuple
     fieldsets = BaseUserAdmin.fieldsets + (
-        ("Profile Info", {"fields": ("profile_img")}),
+        ("Profile Info", {"fields": ("profile_img", "bio", "phone")}),
         ("Timestamps", {"fields": ("created_at", "updated_at")}),
     )
+
     readonly_fields = ("created_at", "updated_at")
-    search_fields = ("username", "email")
+    search_fields = ("username", "email", "first_name", "last_name")
     ordering = ("-date_joined",)
 
 

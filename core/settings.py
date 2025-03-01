@@ -32,8 +32,6 @@ SECRET_KEY = "django-insecure-*ht(#7#in=&cb*7yru*(c^g4#^c3c#g!c7zrqlw5bcelk+sgoy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -56,6 +54,7 @@ INSTALLED_APPS = [
     "chat",
     "reactions",
     "websockets",
+    "corsheaders",
 ]
 
 # REST Framework settings
@@ -79,6 +78,7 @@ CHANNEL_LAYERS = {
 
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -86,6 +86,40 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+# Cors settings
+CORS_ALLOW_ALL_ORIGINS = False
+
+# Parse CORS origins from environment variable
+allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "")
+if allowed_origins_str:
+    # Convert string representation to actual list
+    import ast
+
+    try:
+        CORS_ALLOWED_ORIGINS = ast.literal_eval(allowed_origins_str)
+    except (ValueError, SyntaxError):
+        # Fallback if parsing fails
+        CORS_ALLOWED_ORIGINS = ["http://localhost:8081", "exp://192.168.1.167:8081"]
+else:
+    # Default if environment variable is not set
+    CORS_ALLOWED_ORIGINS = ["http://localhost:8081", "exp://192.168.1.167:8081"]
+
+# Allow credentials in requests (important for auth)
+CORS_ALLOW_CREDENTIALS = True
+
+# Allow specific headers
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -203,3 +237,18 @@ if os.getenv("R2_WORKER_ENABLED", "False").lower() == "true":
 USE_WORKER_URL = os.getenv("USE_WORKER_URL", "True").lower() == "true"
 WORKER_URL = os.getenv("WORKER_URL")
 WORKER_AUTH_KEY = os.getenv("WORKER_AUTH_KEY")
+
+# Parse ALLOWED_HOSTS from environment variable
+allowed_hosts_str = os.getenv("ALLOWED_HOSTS", "")
+if allowed_hosts_str:
+    # Convert string representation to actual list
+    import ast
+
+    try:
+        ALLOWED_HOSTS = ast.literal_eval(allowed_hosts_str)
+    except (ValueError, SyntaxError):
+        # Fallback if parsing fails
+        ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.1.167"]
+else:
+    # Default if environment variable is not set
+    ALLOWED_HOSTS = ["127.0.0.1", "localhost", "192.168.1.167"]
