@@ -48,13 +48,14 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "channels",
     "rest_framework_simplejwt",
+    "corsheaders",
     "storages",  # For CDN integration
     # Local apps
     "authentication",
     "chat",
     "reactions",
-    "websockets",
-    "corsheaders",
+    "socket_handlers",
+    "core",
 ]
 
 # REST Framework settings
