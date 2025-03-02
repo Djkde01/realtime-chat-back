@@ -170,15 +170,26 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 # Database configuration
 if os.environ.get("DATABASE_URL"):
-    DATABASES = {
-        "default": dj_database_url.config(
-            default=os.environ.get("DATABASE_URL"),
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
+    # Parse the DATABASE_URL but we'll add custom options
+    db_config = dj_database_url.parse(
+        os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+    )
+
+    # Add Supabase-specific options
+    db_config["OPTIONS"] = {
+        "sslmode": "require",  # Supabase requires SSL
+        "connect_timeout": 30,
+        "keepalives": 1,
+        "keepalives_idle": 30,
+        "keepalives_interval": 5,
+        "keepalives_count": 5,
+        "target_session_attrs": "read-write",
     }
+
+    DATABASES = {"default": db_config}
 else:
-    # Your local database settings
+    # Your local database settings remain unchanged
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",

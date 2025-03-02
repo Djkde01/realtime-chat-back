@@ -6,10 +6,33 @@ from authentication.views import RegisterView, LoginView, LogoutView, UserViewSe
 from chat.views import ChatViewSet, MessageViewSet
 from reactions.views import ReactionViewSet
 from django.http import HttpResponse
+from django.http import JsonResponse
+from django.db import connection
+from django.views.decorators.csrf import csrf_exempt
 
 
+@csrf_exempt
 def health_check(request):
-    return HttpResponse("OK")
+    """Health check endpoint that verifies database connectivity"""
+    try:
+        # Check database connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            result = cursor.fetchone()
+
+        db_status = "connected" if result and result[0] == 1 else "error"
+
+        return JsonResponse(
+            {
+                "status": "healthy",
+                "database": db_status,
+                "version": "1.0.0",
+            }
+        )
+    except Exception as e:
+        return JsonResponse(
+            {"status": "unhealthy", "database": "error", "error": str(e)}, status=500
+        )
 
 
 router = DefaultRouter()
