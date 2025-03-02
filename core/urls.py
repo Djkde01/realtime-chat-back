@@ -5,6 +5,12 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from authentication.views import RegisterView, LoginView, LogoutView, UserViewSet
 from chat.views import ChatViewSet, MessageViewSet
 from reactions.views import ReactionViewSet
+from django.http import HttpResponse
+
+
+def health_check(request):
+    return HttpResponse("OK")
+
 
 router = DefaultRouter()
 router.register("users", UserViewSet)
@@ -18,5 +24,6 @@ urlpatterns = [
     path("api/auth/login/", LoginView.as_view(), name="login"),
     path("api/auth/logout/", LogoutView.as_view(), name="logout"),
     path("api/auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/health/", health_check, name="health_check"),
     path("api/", include(router.urls)),
 ]
