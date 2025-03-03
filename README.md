@@ -183,6 +183,18 @@ The application is configured for deployment on Render:
 4. Set the required environment variables
 5. Enable automatic migrations during deployment
 
+## Code Formatting
+
+This project uses Black for code formatting to maintain consistent style across the codebase.
+
+### Setting up Black
+
+1. Install Black:
+
+```bash
+pip install black
+```
+
 ## Troubleshooting
 
 ### WebSocket Connection Issues

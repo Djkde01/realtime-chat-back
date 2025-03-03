@@ -11,22 +11,58 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('chat', '0001_initial'),
+        ("chat", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Reaction',
+            name="Reaction",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('like', 'Like'), ('love', 'Love'), ('haha', 'Haha'), ('wow', 'Wow'), ('sad', 'Sad'), ('angry', 'Angry')], default='like', max_length=10)),
-                ('reacted_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('message', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reactions', to='chat.message')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reactions', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("like", "Like"),
+                            ("love", "Love"),
+                            ("haha", "Haha"),
+                            ("wow", "Wow"),
+                            ("sad", "Sad"),
+                            ("angry", "Angry"),
+                        ],
+                        default="like",
+                        max_length=10,
+                    ),
+                ),
+                ("reacted_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "message",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="reactions",
+                        to="chat.message",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="reactions",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('message', 'user')},
+                "unique_together": {("message", "user")},
             },
         ),
     ]
