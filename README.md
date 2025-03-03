@@ -129,7 +129,7 @@ gunicorn core.asgi:application -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT
 
 ## API Documentation
 
-This project uses Swagger/OpenAPI for API documentation. The documentation is automatically generated from your API views and provides an interactive interface to test endpoints.
+This project uses Swagger/OpenAPI for API documentation. You can access to it via `{{base_url}}/swagger`
 
 ## WebSocket Events
 
