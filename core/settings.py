@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "corsheaders",
     "storages",  # For CDN integration
+    "drf_yasg",
     # Local apps
     "authentication",
     "chat",

@@ -127,27 +127,9 @@ For production environments:
 gunicorn core.asgi:application -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT
 ```
 
-## API Endpoints
+## API Documentation
 
-### Authentication
-
-- `POST /api/auth/register/`: Register a new user
-- `POST /api/auth/login/`: Login and get JWT tokens
-- `POST /api/auth/token/refresh/`: Refresh JWT token
-
-### Chats
-
-- `GET /api/chats/`: List all chats for current user
-- `POST /api/chats/`: Create a new chat
-- `GET /api/chats/{id}/`: Get chat details
-- `POST /api/chats/{id}/add_participants/`: Add users to chat
-
-### Messages
-
-- `GET /api/chats/{chat_id}/messages/`: Get messages in a chat
-- `POST /api/chats/{chat_id}/messages/`: Send a message
-- `PUT /api/messages/read/{chat_id}/`: Mark all messages as read
-- `PUT /api/messages/{id}/status/`: Update message status
+This project uses Swagger/OpenAPI for API documentation. The documentation is automatically generated from your API views and provides an interactive interface to test endpoints.
 
 ## WebSocket Events
 
