@@ -47,13 +47,32 @@ besage-chat-back/
 - PostgreSQL
 - Redis (for production)
 - pip and virtualenv
+- Instances of Related Services running
+
+# Related Services
+
+This backend application is part of a larger ecosystem and depends on two external services:
+
+### 1. React Native Frontend
+
+The frontend for this chat application is built with React Native. For a complete user experience, you'll need to set up and run the frontend application.
+
+- [Repository](https://github.com/Djkde01/realtime-chat-client)
+- Follow the setup instructions in the frontend repository to connect it to this backend
+
+### 2. Cloudflare Worker for Image Storage
+
+This application uses Cloudflare R2 and Workers for secure image storage and delivery:
+
+- [Repository](https://github.com/Djkde01/realtime-chat-cdn)
+- Make sure to configure the Cloudflare Worker and update the R2 environment variables in this project:
 
 ## Installation
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/besage-chat-back.git
+git clone git@github.com:Djkde01/realtime-chat-back.git
 cd besage-chat-back
 ```
 
@@ -90,6 +109,19 @@ ALLOWED_HOSTS=127.0.0.1,localhost
 
 # CORS settings
 ALLOWED_ORIGINS=http://localhost:8081,http://127.0.0.1:8081
+
+# Cloudflare R2 Configuration
+R2_ACCESS_KEY_ID=your_r2_access_key
+R2_SECRET_ACCESS_KEY=your_r2_secret_key
+R2_STORAGE_BUCKET_NAME=besage-chat-imgs
+R2_ACCOUNT_ID=your_cloudflare_account_id
+R2_WORKER_ENABLED=true
+R2_WORKER_DOMAIN=https://your-worker.your-subdomain.workers.dev
+
+# Worker configuration
+USE_WORKER_URL=true
+WORKER_URL=https://your-worker.your-subdomain.workers.dev
+WORKER_AUTH_KEY=your-authentication-key
 ```
 
 ### 5. Run migrations
